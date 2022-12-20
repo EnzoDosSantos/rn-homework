@@ -1,12 +1,66 @@
 import { createContext, useContext, useMemo } from 'react'
-import { IUser } from '../types'
+import { IFriends, ITransactions, IUser } from '../types'
 
 interface IAuth {
-    user: IUser | null
+    user: IUser
+    friends: IFriends
+    transactions: ITransactions
+  }
+  
+const user = {
+      user: {
+        name: "John Doe",
+        email: "johndoe@gmail.com",
+        accounts: [
+          {
+            type: "checking",
+            balance: 1000.5
+          },
+          {
+            type: "savings",
+            balance: 2500
+          }
+        ]
+      },
+      transactions: [
+        {
+          type: "deposit",
+          amount: 500,
+          account: "checking"
+        },
+        {
+          type: "withdrawal",
+          amount: 100,
+          account: "savings"
+        },
+        {
+          type: "transfer",
+          amount: 200,
+          fromAccount: "checking",
+          toAccount: "savings"
+        }
+      ],
+      friends: [
+        {
+          name: "Jane Smith",
+          email: "janesmith@gmail.com"
+        },
+        {
+          name: "Bob Johnson",
+          email: "bobjohnson@gmail.com"
+        }
+      ]
 }
-
+const friends = {
+  friends: user.friends
+}
+const transactions = {
+  transactions: user.transactions
+}
 const AuthContext = createContext<IAuth>({
-    user: null
+    user,
+    friends,
+    transactions
 })
 
 interface AuthProviderProps {
@@ -14,52 +68,8 @@ interface AuthProviderProps {
 }
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
-    const user: IUser = {
-        user: {
-          name: "John Doe",
-          email: "johndoe@gmail.com",
-          accounts: [
-            {
-              type: "checking",
-              balance: 1000.5
-            },
-            {
-              type: "savings",
-              balance: 2500
-            }
-          ]
-        },
-        transactions: [
-          {
-            type: "deposit",
-            amount: 500,
-            account: "checking"
-          },
-          {
-            type: "withdrawal",
-            amount: 100,
-            account: "savings"
-          },
-          {
-            type: "transfer",
-            amount: 200,
-            fromAccount: "checking",
-            toAccount: "savings"
-          }
-        ],
-        friends: [
-          {
-            name: "Jane Smith",
-            email: "janesmith@gmail.com"
-          },
-          {
-            name: "Bob Johnson",
-            email: "bobjohnson@gmail.com"
-          }
-        ]
-    }
 
-    const memoedValue = useMemo(() => ({ user }), [user])
+    const memoedValue = useMemo(() => ({ user, friends, transactions }), [user, friends, transactions])
 
     return (
         <AuthContext.Provider value={memoedValue}>
@@ -68,6 +78,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     )
 }
 
-export default function useAuth() {
+export default function useUser() {
     return useContext(AuthContext)
 }

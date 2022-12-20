@@ -35,6 +35,10 @@ export type RootTabScreenProps<Screen extends keyof RootTabParamList> = Composit
   NativeStackScreenProps<RootStackParamList>
 >;
 
+export interface IFriends extends Omit<IUser, 'user' | 'transactions'>{}
+
+export interface ITransactions extends Pick<IUser, 'transactions'>{}
+
 export interface IUser {
   user: User
   transactions: Transaction[]
