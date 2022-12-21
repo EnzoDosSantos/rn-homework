@@ -1,12 +1,13 @@
 import { StyleSheet } from 'react-native';
 
 import { Text, View } from '../components/Themed';
-import { IUser } from '../types';
+import useUser from '../hooks/useGetterContext';
 
-export default function Accounts() {
+export default function Transactions() {
+  const { transactions } = useUser()
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Accounts</Text>
+      <Text style={styles.title}>transactions</Text>
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
     </View>
   );
